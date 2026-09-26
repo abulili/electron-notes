@@ -4,14 +4,15 @@ import './MarkdownReaderPage.css'
 type Heading = {
   id: string
   level: number
-  text: string
+  text: string,
+  lineIndex: number
 }
 
 function extractHeadings(markdown: string): Heading[] {
   return markdown
     .split('\n')
     .map((line, index) => {
-      const match = /^(#{1,3})\s+(.+)$/.exec(line)
+      const match = /^(#{1,5})\s+(.+)$/.exec(line)
 
       if (!match) {
         return null
@@ -20,7 +21,8 @@ function extractHeadings(markdown: string): Heading[] {
       return {
         id: `heading-${index}`,
         level: match[1].length,
-        text: match[2].trim()
+        text: match[2].trim(),
+        lineIndex: index
       }
     })
     .filter((item): item is Heading => item !== null)
@@ -43,6 +45,17 @@ function MarkdownReaderPage(): React.JSX.Element {
     setContent(result.content)
   }
 
+  const lines = useMemo(() => content.split('\n'), [content])
+  const handleScrollToHeading = (heading: Heading): void => {
+    const element = document.getElementById(heading.id)
+
+    if (!element) {
+      return
+    }
+
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <main className="markdown-reader">
       <section className="markdown-reader__main">
@@ -55,7 +68,17 @@ function MarkdownReaderPage(): React.JSX.Element {
           <button onClick={handleOpenFile}>打开文件</button>
         </header>
 
-        <pre className="markdown-reader__content">{content || '请选择一个 .md 文件'}</pre>
+        <div className="markdown-reader__content">
+          {lines.length > 0 && content ? (
+            lines.map((line, index) => (
+              <div id={`heading-${index}`} key={index} className="markdown-reader__line">
+                {line || ' '}
+              </div>
+            ))
+          ) : (
+            <div className="markdown-reader__empty-content">请选择一个 .md 文件</div>
+          )}
+        </div>
       </section>
 
       <aside className="markdown-reader__outline">
@@ -64,12 +87,13 @@ function MarkdownReaderPage(): React.JSX.Element {
         {headings.length > 0 ? (
           <nav>
             {headings.map((heading) => (
-              <div
+              <button
                 key={heading.id}
                 className={`markdown-reader__heading markdown-reader__heading--${heading.level}`}
+                onClick={() => handleScrollToHeading(heading)}
               >
                 {heading.text}
-              </div>
+              </button>
             ))}
           </nav>
         ) : (
