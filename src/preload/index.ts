@@ -1,4 +1,4 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
@@ -10,7 +10,9 @@ import { electronAPI } from '@electron-toolkit/preload'
   -> 主进程执行文件操作
   -> 返回结果给页面
  */
-const api = {}
+const api = {
+  openMarkdownFile: () => ipcRenderer.invoke('markdown:openFile')
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

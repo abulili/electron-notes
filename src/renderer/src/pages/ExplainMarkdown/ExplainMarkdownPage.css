@@ -1,0 +1,124 @@
+.explain-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+.explain-page button {
+  font: inherit;
+}
+
+.explain-page__workspace {
+  min-width: 0;
+  padding: 32px;
+}
+
+.explain-page__header {
+  margin-bottom: 24px;
+}
+
+.explain-page__header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.explain-page__header p {
+  margin-top: 6px;
+  color: #667085;
+  font-size: 14px;
+}
+
+.explain-page__document {
+  max-width: 820px;
+  min-height: 520px;
+  padding: 28px;
+  border: 1px solid #d9dee7;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  color: #1f2937;
+  font-size: 18px;
+  line-height: 2;
+  white-space: pre-wrap;
+}
+
+.explain-page__mark {
+  display: inline;
+  padding: 2px 4px;
+  border: 0;
+  border-bottom: 2px solid #d97706;
+  background: #fff7d6;
+  color: #92400e;
+  cursor: pointer;
+}
+
+.explain-page__mark:hover,
+.explain-page__mark--active {
+  background: #fde68a;
+}
+
+.explain-page__panel {
+  border-left: 1px solid #d9dee7;
+  background: #ffffff;
+  padding: 24px;
+}
+
+.explain-page__panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.explain-page__panel-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.explain-page__panel p {
+  margin-top: 18px;
+  color: #374151;
+  line-height: 1.8;
+}
+
+.explain-page__close {
+  flex: 0 0 auto;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #374151;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.explain-page__close:hover {
+  background: #f3f4f6;
+}
+
+.explain-page__empty {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+@media (max-width: 760px) {
+  .explain-page {
+    grid-template-columns: 1fr;
+  }
+
+  .explain-page__workspace {
+    padding: 20px;
+  }
+
+  .explain-page__panel {
+    border-top: 1px solid #d9dee7;
+    border-left: 0;
+  }
+}

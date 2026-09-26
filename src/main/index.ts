@@ -1,7 +1,8 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { readFile } from 'node:fs/promises'
 
 function createWindow(): void {
   // Create the browser window. 主进程，创建桌面窗口
@@ -51,6 +52,26 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+
+  ipcMain.handle('markdown:openFile', async (event) => {
+    const result = await dialog.showOpenDialog({
+      title: '选择 Markdown 文件',
+      properties: ['openFile'],
+      filters: [{ name: 'Markdown', extensions: ['md', 'markdown'] }]
+    })
+
+    if (result.canceled || result.filePaths.length === 0) {
+      return null
+    }
+
+    const filePath = result.filePaths[0]
+    const content = await readFile(filePath, 'utf-8')
+
+    return {
+      filePath,
+      content
+    }
+  })
 
   createWindow()
 
